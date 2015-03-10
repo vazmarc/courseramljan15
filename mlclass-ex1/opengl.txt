@@ -1,0 +1,61 @@
+const std_string fragmentShader = (
+"#version 330\n"
+"out vec4 outputColor;\n"
+"void main()\n"
+"{\n"
+"	outputColor = vec4(1.0f,1.0f,1.0f,1.0f);\n"
+"}\n"
+);
+/
+
+
+glClearColor -> set up the clearing colour -set up state(what color to use for clears)
+glClear -> does the actual clearing, uses the colour specified above
+
+glUseProgram -> specifies the shader program to be used.
+
+GLuint -> used for identifiers
+glDrawArrays -> draws triangles
+
+One thing to check - are the references to the different state elements all in the same range or do the values used overlap which might be acceptable given that they reference different object types.
+glCreateShader -> creates a "shader" of a given type associated with an object identifier.
+glShaderSource -> replaces the shader source for a shader object, as given by a uint, as obtained from glcreateshader
+glCompileShader -> compiles the shader
+glGetShaderiv -> gets the compile status or other status, glGetShaderInfoLog -> gives the actual log for a compiler error.
+
+
+
+first compile shaders, generate shader identifiers, 
+creating a program(glCreateProgram)-> attaching shaders to it(glAttachShader).
+glLinkProgram -> Links the different shader types
+
+world space->view space->clip space -> NDC space(divide by W)->screen space(depends on the viewport and depth range, occurs during rasterization)
+
+
+Vertex shader ouput-> clip space, 4D coordinates
+
+
+buffer object, memory in opengl, glGenBuffers
+
+binding targets that represent opengl context, objects need to be bound to some binding targets to update state
+
+glGenBuffers -> create a buffer object
+glBindBuffers -> bind the buffer object to a binding target in the open gl context, allows us to do a number of ops without specifcying what we're working on, we're implicitly working on the currently bound context.
+
+Good coding practice, unbinding objects that we bind.
+
+Interpreting the buffer data as vertices,
+bind to the vertex attribute buffer a second time, 
+enable the vertex attribute array 0, not sure what the 0 here implies, or how we would know what index to use for different arrays- it is actually the index of the vertex attribute,
+the layout parameter specifies attribute indices and associates them with names.
+
+
+glDrawArrays(GL_TRIANGLES, 0, 3); -> draw triangles based on the specified vertex attribute array, read upto 3 vertices
+
+
+Clip space range -> -1 to 1, NDC range is also -1 to 1, though in our case this happens to be the same as clip space because of there not being a divide by W operation.
+
+fragment shader is given the window space position, although other attributes likely need to be explicitly interpolated as we've seen in the composite shaders.
+
+
+if only one output is defined for a fragment shader, it automatically assumes that this is colour.
